@@ -1,12 +1,37 @@
 # go-tpm2/common
 
+[![CI](https://github.com/go-tpm2/common/actions/workflows/ci.yml/badge.svg)](https://github.com/go-tpm2/common/actions/workflows/ci.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/go-tpm2/common.svg)](https://pkg.go.dev/github.com/go-tpm2/common)
+[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](#conventions)
+[![License](https://img.shields.io/badge/license-BSD--3--Clause-blue)](LICENSE)
+
+The shared foundation of the pure-Go TPM 2.0 stack: the `Transport` and
+`Regs` interfaces, the **big-endian** TPM 2.0 wire codec, and the
+spec-derived constants. **v0.1.0.**
+
 The transport-agnostic, platform-agnostic foundation shared by every
 layer of the pure-Go TPM 2.0 stack in the **go-tpm2** family. It mirrors
 the role of [`go-virtio/common`](https://github.com/go-virtio/common):
 it owns the small plug-in interfaces, the big-endian TPM 2.0 wire codec,
 and the spec-derived constants. The higher layer (the `tpm2` command
-layer) and the lower layers (the `crb`/`tis`/`passthrough`/`socket`
-transports) sit on either side and import this package.
+layer) and the lower layers (the `crb`/`tis` MMIO transports) sit on
+either side and import this package.
+
+## Install
+
+```sh
+go get github.com/go-tpm2/common
+```
+
+## The go-tpm2 stack
+
+| Repo | Role |
+|---|---|
+| [`common`](https://github.com/go-tpm2/common) | **this** — Transport/Regs interfaces + big-endian codec + constants |
+| [`crb`](https://github.com/go-tpm2/crb) | CRB (Command Response Buffer) MMIO transport |
+| [`tis`](https://github.com/go-tpm2/tis) | TIS/FIFO MMIO transport |
+| [`tpm2`](https://github.com/go-tpm2/tpm2) | TPM 2.0 command API |
+| [`validate`](https://github.com/go-tpm2/validate) | TamaGo+QEMU+swtpm real-hardware validation harness |
 
 ## Interfaces
 
@@ -91,7 +116,14 @@ Part 2: Structures".
 - BSD-3-Clause on every file.
 - 100% statement coverage (`GOWORK=off go test -cover ./...`).
 - `GOWORK=off` — this module is not part of any workspace.
+- Big-endian: the TPM 2.0 wire format is MSB-first throughout.
 - Spec-traceable: every struct/const cites its TCG TPM 2.0 Part number.
+
+## Specifications
+
+- TCG TPM 2.0 Library, **Parts 1–4** (Architecture, Structures, Commands, Support Routines).
+- TCG PC Client Platform TPM Profile (**PTP**) Specification.
+- TCG EK Credential Profile.
 
 ## License
 
